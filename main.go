@@ -4,7 +4,7 @@ import "log"
 
 func main() {
 
-	err := one_two()
+	err := two()
 
 	if err != nil {
 		log.Fatalf("we got a probbem %v", err)

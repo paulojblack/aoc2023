@@ -10,7 +10,7 @@ func one() error {
 	lc := make(chan string)
 
 	go func() {
-		if err := read("./one.txt", lc); err != nil {
+		if err := read("./1.txt", lc); err != nil {
 			fmt.Printf("file read err %v", err)
 		}
 	}()
