@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"regexp"
+	"strings"
 	"unicode"
 )
 
@@ -22,7 +23,8 @@ func three_a() error {
 		specialCharacters := re.FindAllStringIndex(line, -1)
 		fmt.Println(specialCharacters)
 
-		for xIdx, sym := range specialCharacters {
+		for _, sym := range specialCharacters {
+			xIdx := sym[0]
 			symPos := []int{xIdx, yIdx}
 			fmt.Printf("Searching neighbors of symbol %v, at position x: %v y: %v \n", string(sym[0]), xIdx, yIdx)
 			findNeighboringSum(line2d, symPos)
@@ -47,17 +49,18 @@ func findNeighboringSum(grid []string, pos []int) int {
 
 	for _, move := range moveList {
 		newPos := []int{pos[0] + move[0], pos[1] + move[1]}
-
+		newX := newPos[0]
+		newY := newPos[1]
 		// Handle horizontal edges
-		if newPos[0] < 0 || newPos[0] >= len(grid[0]) {
+		if newX < 0 || newX >= len(grid[0]) {
 			continue
 		}
 		// Handle vertical edges
-		if newPos[1] < 0 || newPos[1] >= len(grid) {
+		if newY < 0 || newY >= len(grid) {
 			continue
 		}
 
-		neighbor := grid[newPos[0]][newPos[1]]
+		neighbor := grid[newY][newX]
 
 		// Can directly cast as rune because all input is ASCII
 		// Throw it out if its not a digit
@@ -65,10 +68,18 @@ func findNeighboringSum(grid []string, pos []int) int {
 			continue
 		}
 
-		// num := string(neighbor)
-
+		num := string(neighbor)
+		byteDot := "."
+		byteDot = string(byteDot)
 		// Check left
-		// for
+
+		for i := newX - 1; i >= 0 && unicode.IsDigit(rune(grid[newY][i])); i-- {
+			newNum := string(grid[newY][i])
+			grid[newY] = strings.Replace(grid[newY], newNum, ".", -1)
+			num = newNum + num
+		}
+
+		fmt.Println(grid[newY])
 
 	}
 
